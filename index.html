@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>五维复利成长系统</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:#f2f2f7;color:#1a1a1a;font-size:14px;-webkit-text-size-adjust:100%;}
+.header{background:#fff;padding:16px;border-bottom:1px solid #e5e5ea;text-align:center;}
+.header h1{font-size:17px;font-weight:600;color:#1a1a1a;}
+.header p{font-size:12px;color:#8e8e93;margin-top:4px;}
+.nav{background:#fff;padding:12px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #e5e5ea;}
+.nav-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.nav-row.single{grid-template-columns:1fr;}
+.tab-btn{padding:10px 8px;border-radius:10px;border:1.5px solid #e5e5ea;background:#fff;color:#8e8e93;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;width:100%;font-family:inherit;transition:all .15s;}
+.tab-btn.active{font-weight:600;background:#f8f8ff;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.content{padding:12px;}
+.panel{display:none;}
+.panel.active{display:block;}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);}
+.card-title{font-size:15px;font-weight:600;color:#1a1a1a;margin-bottom:4px;}
+.card-sub{font-size:12px;color:#8e8e93;margin-bottom:12px;line-height:1.55;}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px;}
+.metric{background:#f2f2f7;border-radius:10px;padding:10px 12px;}
+.metric-label{font-size:11px;color:#8e8e93;margin-bottom:4px;}
+.metric-val{font-size:17px;font-weight:700;}
+.srow{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.slabel{font-size:12px;color:#8e8e93;width:74px;flex-shrink:0;line-height:1.3;}
+.sval{font-size:12px;font-weight:600;min-width:54px;text-align:right;flex-shrink:0;}
+input[type=range]{flex:1;min-width:0;height:28px;}
+.habit-list{list-style:none;}
+.habit-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f2f2f7;}
+.habit-item:last-child{border-bottom:none;}
+.hico{font-size:20px;flex-shrink:0;line-height:1.2;}
+.hname{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
+.hdesc{font-size:11px;color:#8e8e93;line-height:1.5;}
+.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;margin-top:4px;font-weight:500;}
+.chart-wrap{position:relative;height:170px;margin-top:8px;}
+.formula{background:#f2f2f7;border-radius:10px;padding:10px 12px;font-size:12px;color:#636366;margin-bottom:12px;line-height:1.65;}
+.formula strong{color:#1a1a1a;font-weight:600;}
+.section-tip{font-size:11px;color:#8e8e93;text-align:center;padding:16px 0 4px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>五维复利成长系统</h1>
+  <p>财富 · 健康 · 能力 · 思维 · 品德</p>
+</div>
+
+<div class="nav">
+  <div class="nav-row">
+    <button class="tab-btn active" data-tab="wealth" style="border-color:#3266ad;color:#3266ad;background:#f0f5ff;"><span class="dot" style="background:#3266ad;"></span>财富复利</button>
+    <button class="tab-btn" data-tab="health"><span class="dot" style="background:#1D9E75;"></span>健康复利</button>
+  </div>
+  <div class="nav-row">
+    <button class="tab-btn" data-tab="skill"><span class="dot" style="background:#7F77DD;"></span>能力复利</button>
+    <button class="tab-btn" data-tab="mind"><span class="dot" style="background:#BA7517;"></span>思维复利</button>
+  </div>
+  <div class="nav-row single">
+    <button class="tab-btn" data-tab="virtue"><span class="dot" style="background:#D4537E;"></span>品德复利</button>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- 财富 -->
+<div class="panel active" id="panel-wealth">
+  <div class="card">
+    <div class="card-title">财富复利计算器</div>
+    <div class="card-sub">持续投入 × 时间 × 收益率 = 财富雪球</div>
+    <div class="srow"><span class="slabel">月投入（元）</span><input type="range" id="w-m" min="500" max="50000" step="500" value="5000"><span class="sval" id="w-m-o">5,000元</span></div>
+    <div class="srow"><span class="slabel">年化收益率</span><input type="range" id="w-r" min="3" max="20" step="1" value="8"><span class="sval" id="w-r-o">8%</span></div>
+    <div class="srow"><span class="slabel">投资年限</span><input type="range" id="w-y" min="1" max="30" step="1" value="10"><span class="sval" id="w-y-o">10年</span></div>
+    <div class="grid2">
+      <div class="metric"><div class="metric-label">最终资产</div><div class="metric-val" id="w-fv" style="color:#3266ad;">—</div></div>
+      <div class="metric"><div class="metric-label">复利增幅</div><div class="metric-val" id="w-gain" style="color:#1D9E75;">—</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="wChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">行动清单</div>
+    <ul class="habit-list">
+      <li class="habit-item"><div class="hico">💰</div><div><div class="hname">建立多元收入流</div><div class="hdesc">主业＋副业＋投资，叠加收入、分散风险</div><span class="badge" style="background:#E6F1FB;color:#0C447C;">核心策略</span></div></li>
+      <li class="habit-item"><div class="hico">📈</div><div><div class="hname">每月强制储蓄 ≥ 20%</div><div class="hdesc">先储蓄后消费，自动扣款避免意志力消耗</div><span class="badge" style="background:#E6F1FB;color:#0C447C;">执行习惯</span></div></li>
+      <li class="habit-item"><div class="hico">🏦</div><div><div class="hname">每季度资产再平衡</div><div class="hdesc">检视配置，控制风险，让时间工作</div><span class="badge" style="background:#E6F1FB;color:#0C447C;">长期思维</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 健康 -->
+<div class="panel" id="panel-health">
+  <div class="card">
+    <div class="card-title">健康资本复利模型</div>
+    <div class="card-sub">身体是ROI最高的资产。每天微小投入，数年后产生巨大回报。</div>
+    <div class="formula"><strong>公式：</strong>今日精力 = 睡眠质量 × 运动频率 × 饮食结构 × 压力管理<br><br>精力每提升1分，认知效率提升约 <strong>15–25%</strong></div>
+    <div class="grid2">
+      <div class="metric"><div class="metric-label">每日运动30分钟</div><div class="metric-val" style="color:#1D9E75;font-size:14px;">1年=182小时</div></div>
+      <div class="metric"><div class="metric-label">保持7–8小时睡眠</div><div class="metric-val" style="color:#1D9E75;">精力+30%</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="hChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">每日健康习惯</div>
+    <ul class="habit-list">
+      <li class="habit-item"><div class="hico">🌙</div><div><div class="hname">23:00前入睡</div><div class="hdesc">大脑清洁代谢废物，影响记忆与决策质量</div><span class="badge" style="background:#E1F5EE;color:#085041;">最高优先级</span></div></li>
+      <li class="habit-item"><div class="hico">🏃</div><div><div class="hname">每日30分钟有氧</div><div class="hdesc">促进BDNF分泌，增强大脑可塑性</div><span class="badge" style="background:#E1F5EE;color:#085041;">每日习惯</span></div></li>
+      <li class="habit-item"><div class="hico">🥗</div><div><div class="hname">控糖＋优质蛋白</div><div class="hdesc">减少血糖波动，保持下午高效工作状态</div><span class="badge" style="background:#E1F5EE;color:#085041;">饮食结构</span></div></li>
+      <li class="habit-item"><div class="hico">🩺</div><div><div class="hname">每季度体检一次</div><div class="hdesc">早发现问题，健康风险越早干预成本越低</div><span class="badge" style="background:#E1F5EE;color:#085041;">预防投资</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 能力 -->
+<div class="panel" id="panel-skill">
+  <div class="card">
+    <div class="card-title">能力复利：T型矩阵</div>
+    <div class="card-sub">纵深：1–2个核心专长（不可替代性）；横宽：跨领域连接（创新源泉）</div>
+    <div class="formula"><strong>复利关键：</strong>每次输出（教授/写作/实践）让知识固化率从 <strong>5% → 90%</strong><br><br>每天1小时，坚持10年 = 3650小时，达到专业水平</div>
+    <div class="chart-wrap"><canvas id="sChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">能力行动系统</div>
+    <ul class="habit-list">
+      <li class="habit-item"><div class="hico">📚</div><div><div class="hname">每日阅读30分钟</div><div class="hdesc">专业书籍＋行业报告，建立知识密度护城河</div><span class="badge" style="background:#EEEDFE;color:#3C3489;">输入系统</span></div></li>
+      <li class="habit-item"><div class="hico">✍️</div><div><div class="hname">每周写复盘笔记</div><div class="hdesc">记录决策、验证假设、提炼可复用规律</div><span class="badge" style="background:#EEEDFE;color:#3C3489;">输出固化</span></div></li>
+      <li class="habit-item"><div class="hico">👥</div><div><div class="hname">每月向团队分享</div><div class="hdesc">教授是最好的学习，同时带动团队成长</div><span class="badge" style="background:#EEEDFE;color:#3C3489;">教授加速</span></div></li>
+      <li class="habit-item"><div class="hico">🔄</div><div><div class="hname">每季度跨界学一项</div><div class="hdesc">数据分析、心理学——连接产生创新</div><span class="badge" style="background:#EEEDFE;color:#3C3489;">横向拓展</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 思维 -->
+<div class="panel" id="panel-mind">
+  <div class="card">
+    <div class="card-title">思维复利：认知升级</div>
+    <div class="card-sub">思维框架是杠杆，好模型让相同信息产生10倍决策质量差异</div>
+    <div class="formula"><strong>公式：</strong>决策质量 = 心智模型数量 × 组合运用能力<br><br>每避免1个认知偏见，决策质量提升约 <strong>20%</strong></div>
+    <div class="grid2">
+      <div class="metric"><div class="metric-label">每天复盘15分钟</div><div class="metric-val" style="color:#BA7517;">1年91小时</div></div>
+      <div class="metric"><div class="metric-label">避免1个认知偏见</div><div class="metric-val" style="color:#BA7517;font-size:14px;">决策+20%</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="mChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">核心框架清单</div>
+    <ul class="habit-list">
+      <li class="habit-item"><div class="hico">⚛️</div><div><div class="hname">第一性原理</div><div class="hdesc">打破假设，回到本质重构方案，避免经验惰性</div><span class="badge" style="background:#FAEEDA;color:#633806;">基础框架</span></div></li>
+      <li class="habit-item"><div class="hico">🔀</div><div><div class="hname">逆向思维</div><div class="hdesc">先想"怎么会失败"，反推成功路径（查理·芒格法）</div><span class="badge" style="background:#FAEEDA;color:#633806;">风险框架</span></div></li>
+      <li class="habit-item"><div class="hico">👁️</div><div><div class="hname">系统思维</div><div class="hdesc">看见反馈回路与滞后效应，做长期有利决策</div><span class="badge" style="background:#FAEEDA;color:#633806;">长期框架</span></div></li>
+      <li class="habit-item"><div class="hico">📊</div><div><div class="hname">每日15分钟复盘</div><div class="hdesc">假设是否验证？下次如何改进？</div><span class="badge" style="background:#FAEEDA;color:#633806;">每日习惯</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 品德 -->
+<div class="panel" id="panel-virtue">
+  <div class="card">
+    <div class="card-title">品德复利：信任资产</div>
+    <div class="card-sub">品德是最慢积累、最难复制、最高壁垒的复利——也是商业的终极护城河</div>
+    <div class="formula"><strong>公式：</strong>信任资产 = Σ（言行一致 × 时间 × 见证者数量）<br><br>一次失信的损耗 = <strong>10倍</strong>守信积累</div>
+    <div class="grid2">
+      <div class="metric"><div class="metric-label">每次守诺</div><div class="metric-val" style="color:#D4537E;">信任+1分</div></div>
+      <div class="metric"><div class="metric-label">口碑裂变系数</div><div class="metric-val" style="color:#D4537E;font-size:14px;">每人传3–5人</div></div>
+    </div>
+    <div class="chart-wrap"><canvas id="vChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="card-title">品德实践系统</div>
+    <ul class="habit-list">
+      <li class="habit-item"><div class="hico">🤝</div><div><div class="hname">100% 兑现承诺</div><div class="hdesc">宁可少承诺，每次兑现都是信任储蓄</div><span class="badge" style="background:#FBEAF0;color:#72243E;">核心原则</span></div></li>
+      <li class="habit-item"><div class="hico">❤️</div><div><div class="hname">利他思维，先给后拿</div><div class="hdesc">帮员工成长、帮供应商赚钱、帮顾客解决问题</div><span class="badge" style="background:#FBEAF0;color:#72243E;">关系资产</span></div></li>
+      <li class="habit-item"><div class="hico">🛡️</div><div><div class="hname">公开认错，不推卸</div><div class="hdesc">出错第一时间承担，勇于面对加速信任重建</div><span class="badge" style="background:#FBEAF0;color:#72243E;">危机处理</span></div></li>
+      <li class="habit-item"><div class="hico">⭐</div><div><div class="hname">长期主义，拒绝短视</div><div class="hdesc">不因短期利益损害合作方，声誉是最贵的无形资产</div><span class="badge" style="background:#FBEAF0;color:#72243E;">战略选择</span></div></li>
+    </ul>
+  </div>
+</div>
+
+<div class="section-tip">五维复利 · 持续积累 · 时间是最好的朋友</div>
+
+</div><!-- .content -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+var gc='rgba(0,0,0,0.06)',lc='#aaa';
+var yrs=['1年','2年','3年','4年','5年','6年','7年','8年','9年','10年'];
+function mkChart(id,color,d1,d2,l1,l2){
+  var el=document.getElementById(id);if(!el)return;
+  new Chart(el,{type:'line',data:{labels:yrs,datasets:[
+    {label:l1,data:d1,borderColor:color,backgroundColor:color+'28',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5},
+    {label:l2,data:d2,borderColor:'#ccc',fill:false,tension:0.1,pointRadius:0,borderWidth:1.5,borderDash:[5,4]}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,labels:{color:lc,boxWidth:10,font:{size:11},padding:8}}},
+    scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:10}}}}}});
+}
+mkChart('hChart','#1D9E75',[55,60,66,72,78,83,88,91,94,97],[50,51,52,53,54,55,56,57,58,59],'健康习惯者精力指数','基线');
+mkChart('sChart','#7F77DD',[10,12,15,20,28,40,57,78,100,130],[10,11,12,13,14,15,16,17,18,19],'持续学习者市场价值','不学习者');
+mkChart('mChart','#BA7517',[50,56,64,74,86,99,113,129,146,165],[50,51,52,53,54,55,56,57,58,59],'心智模型积累者','无框架基线');
+mkChart('vChart','#D4537E',[100,115,135,162,198,243,295,356,427,511],[100,103,106,109,112,115,118,121,124,127],'信任资产（口碑复利）','交易型关系');
+
+var wChart=null;
+function calcW(){
+  var m=+document.getElementById('w-m').value;
+  var r=+document.getElementById('w-r').value/100/12;
+  var y=+document.getElementById('w-y').value;
+  var n=y*12,fv=m*((Math.pow(1+r,n)-1)/r),tin=m*n;
+  document.getElementById('w-m-o').textContent=m.toLocaleString()+'元';
+  document.getElementById('w-r-o').textContent=(+document.getElementById('w-r').value)+'%';
+  document.getElementById('w-y-o').textContent=y+'年';
+  document.getElementById('w-fv').textContent=(fv/10000).toFixed(1)+'万';
+  document.getElementById('w-gain').textContent='+'+Math.round((fv-tin)/tin*100)+'%';
+  var labels=[],fvD=[],tinD=[];
+  for(var i=1;i<=y;i++){var ni=i*12;labels.push(i+'年');fvD.push(Math.round(m*((Math.pow(1+r,ni)-1)/r)/10000));tinD.push(Math.round(m*ni/10000));}
+  if(wChart)wChart.destroy();
+  wChart=new Chart(document.getElementById('wChart'),{type:'line',data:{labels:labels,datasets:[
+    {label:'资产（万元）',data:fvD,borderColor:'#3266ad',backgroundColor:'#3266ad28',fill:true,tension:0.4,pointRadius:0,borderWidth:2.5},
+    {label:'累计投入（万元）',data:tinD,borderColor:'#ccc',fill:false,tension:0.1,pointRadius:0,borderWidth:1.5,borderDash:[5,4]}
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,labels:{color:lc,boxWidth:10,font:{size:11},padding:8}}},
+    scales:{x:{grid:{color:gc},ticks:{color:lc,font:{size:10}}},y:{grid:{color:gc},ticks:{color:lc,font:{size:10},callback:function(v){return v+'万';}}}}}});
+}
+['w-m','w-r','w-y'].forEach(function(id){document.getElementById(id).addEventListener('input',calcW);});
+calcW();
+
+document.querySelector('.nav').addEventListener('click',function(e){
+  var btn=e.target.closest('.tab-btn');if(!btn)return;
+  var tab=btn.dataset.tab;
+  var cm={wealth:'#3266ad',health:'#1D9E75',skill:'#7F77DD',mind:'#BA7517',virtue:'#D4537E'};
+  var cb={wealth:'#f0f5ff',health:'#f0faf6',skill:'#f5f4ff',mind:'#fdf6ea',virtue:'#fef0f5'};
+  var c=cm[tab];
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');b.style.borderColor='#e5e5ea';b.style.color='#8e8e93';b.style.background='#fff';});
+  btn.classList.add('active');btn.style.borderColor=c;btn.style.color=c;btn.style.background=cb[tab];
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('panel-'+tab).classList.add('active');
+});
+</script>
+</body>
+</html>
