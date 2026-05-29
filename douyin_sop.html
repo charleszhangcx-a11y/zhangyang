@@ -203,12 +203,94 @@ input::placeholder,textarea::placeholder{color:#CCC;font-size:13px;}
         <div class="tag og" data-v="约会出门">约会</div>
       </div>
     </div>
-    <div class="fr"><label>面料 / 材质</label><input type="text" id="mat" placeholder="例：精纺羊毛、空气棉、冰丝针织"></div>
+    <div class="fr"><label>面料 / 材质（越详细话术越精准）</label><input type="text" id="mat" placeholder="例：95%桑蚕丝+5%氨纶、280g空气棉、冰丝针织"></div>
+    <div class="fr"><label>面料手感 / 特性说明</label><input type="text" id="mat-feel" placeholder="例：亲肤不起球、透气吸汗、悬垂感强、不透不闷"></div>
   </div>
 </div>
 
 <div class="sec">
-  <div class="sec-hd"><div class="sec-num">2</div><div class="sec-ttl">目标用户 & 痛点</div></div>
+  <div class="sec-hd"><div class="sec-num">2</div><div class="sec-ttl">尺码 & 出货信息</div></div>
+  <div class="card">
+    <div class="fr">
+      <label>可选尺码</label>
+      <div class="tags" id="sizes">
+        <div class="tag pk" data-v="S">S</div>
+        <div class="tag pk" data-v="M">M</div>
+        <div class="tag pk on" data-v="L">L</div>
+        <div class="tag pk on" data-v="XL">XL</div>
+        <div class="tag pk" data-v="2XL">2XL</div>
+        <div class="tag pk" data-v="3XL">3XL</div>
+        <div class="tag pk" data-v="均码">均码</div>
+        <div class="tag pk" data-v="小码">小码</div>
+        <div class="tag pk" data-v="大码">大码</div>
+      </div>
+    </div>
+    <div class="fr">
+      <label>尺码选购建议（主播怎么帮顾客选码）</label>
+      <textarea id="size-guide" placeholder="例：身高155-162体重90-110斤选S，163-168体重110-125斤选M，168以上或微胖选L；偏爱宽松版型建议大一码"></textarea>
+    </div>
+    <div class="fr g2">
+      <div>
+        <label>可选颜色</label>
+        <input type="text" id="colors" placeholder="例：黑色、奶白、烟粉、深蓝">
+      </div>
+      <div>
+        <label>哪个颜色最好卖</label>
+        <input type="text" id="best-color" placeholder="例：黑色、奶白">
+      </div>
+    </div>
+    <div class="fr g2">
+      <div>
+        <label>出货时间 <span class="req">*</span></label>
+        <select id="ship-time">
+          <option value="当天发货">当天发货</option>
+          <option value="24小时内发货">24小时内发货</option>
+          <option value="48小时内发货">48小时内发货</option>
+          <option value="3天内发货">3天内发货</option>
+          <option value="预售7天发货">预售7天发货</option>
+          <option value="预售15天发货">预售15天发货</option>
+        </select>
+      </div>
+      <div>
+        <label>是否有运费险</label>
+        <select id="freight">
+          <option value="已开运费险，不合适免费退">有运费险</option>
+          <option value="支持7天无理由退换">无运费险但支持退换</option>
+          <option value="定制款不退换">定制款不退换</option>
+        </select>
+      </div>
+    </div>
+    <div class="fr">
+      <label>发货/物流特别说明（可选）</label>
+      <input type="text" id="ship-note" placeholder="例：顺丰包邮；新疆西藏偏远地区加收运费；超过50件同色同码才补货">
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd"><div class="sec-num">3</div><div class="sec-ttl">搭配建议</div></div>
+  <div class="card">
+    <div class="fr">
+      <label>本款最佳搭配单品（写具体，话术会直接用）</label>
+      <textarea id="match1" placeholder="例：搭白色衬衫+小白鞋，整个人清爽减龄；搭黑色打底裤+短靴，秋冬通勤绝了"></textarea>
+    </div>
+    <div class="fr">
+      <label>适合哪种场合穿（写具体场景）</label>
+      <textarea id="match-scene" placeholder="例：逛街约会首选；周一到周五上班穿不出错；婚礼伴娘宴会都撑得住场"></textarea>
+    </div>
+    <div class="fr">
+      <label>不建议搭配 / 不适合人群（诚实说反而增信任）</label>
+      <input type="text" id="no-match" placeholder="例：不适合O型腿；不建议搭宽松卫衣，会显胖；超过180斤建议大两码或放弃">
+    </div>
+    <div class="fr">
+      <label>直播间同款配套产品（引导连带购买）</label>
+      <input type="text" id="bundle" placeholder="例：今天同时上的腰带+这条裙子，凑单满199还能再减20">
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-hd"><div class="sec-num">4</div><div class="sec-ttl">目标用户 & 痛点</div></div>
   <div class="card">
     <div class="fr">
       <label>受众年龄</label>
@@ -237,7 +319,7 @@ input::placeholder,textarea::placeholder{color:#CCC;font-size:13px;}
 </div>
 
 <div class="sec">
-  <div class="sec-hd"><div class="sec-num">3</div><div class="sec-ttl">直播策略</div></div>
+  <div class="sec-hd"><div class="sec-num">5</div><div class="sec-ttl">直播策略</div></div>
   <div class="card">
     <div class="fr g2">
       <div><label>目标销量（件）</label><input type="number" id="tgt" placeholder="200"></div>
@@ -285,11 +367,12 @@ input::placeholder,textarea::placeholder{color:#CCC;font-size:13px;}
     <p id="res-sub">留人 · 互动 · 关注 · 转化 · 完整方案</p>
   </div>
 
-  <div class="pillars">
+  <div class="pillars" style="grid-template-columns:repeat(5,1fr)">
     <div class="pillar-btn active" onclick="tab(0)"><div class="pb-icon">🪝</div><div class="pb-label">留人</div></div>
     <div class="pillar-btn" onclick="tab(1)"><div class="pb-icon">💬</div><div class="pb-label">互动</div></div>
     <div class="pillar-btn" onclick="tab(2)"><div class="pb-icon">❤️</div><div class="pb-label">关注</div></div>
     <div class="pillar-btn" onclick="tab(3)"><div class="pb-icon">💰</div><div class="pb-label">转化</div></div>
+    <div class="pillar-btn" onclick="tab(4)"><div class="pb-icon">📦</div><div class="pb-label">产品卡</div></div>
   </div>
 
   <!-- ===== 留人 ===== -->
@@ -428,6 +511,47 @@ input::placeholder,textarea::placeholder{color:#CCC;font-size:13px;}
     </div>
   </div>
 
+  <!-- ===== 产品卡 ===== -->
+  <div class="panel" id="p4">
+    <div class="ps">
+      <div class="ps-ttl">📦 产品信息卡 <span class="ps-badge" style="background:#EEF4FF;color:#1A73E8">主播提词专用</span></div>
+      <div class="notice"><strong>用法：</strong>打印贴在直播桌旁，或截图放手机随时查看。顾客问面料/尺码/发货时间，扫一眼立即回答，不卡顿不出错。</div>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">🧵 面料信息 & 话术</div>
+      <div id="fab-card"></div>
+      <button class="cp" onclick="cp('fab-card')">📋 复制面料话术</button>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">📐 尺码选购指南 & 话术</div>
+      <div id="size-card"></div>
+      <button class="cp" onclick="cp('size-card')">📋 复制尺码话术</button>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">🚚 出货时间 & 话术</div>
+      <div id="ship-card"></div>
+      <button class="cp" onclick="cp('ship-card')">📋 复制出货话术</button>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">👗 搭配建议 & 话术</div>
+      <div id="match-card"></div>
+      <button class="cp" onclick="cp('match-card')">📋 复制搭配话术</button>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">⚠️ 不适合人群说明（诚实建立信任）</div>
+      <div id="nomatch-card"></div>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">🛒 连带购买话术（提升客单价）</div>
+      <div id="bundle-card"></div>
+      <button class="cp" onclick="cp('bundle-card')">📋 复制连带话术</button>
+    </div>
+    <div class="ps">
+      <div class="ps-ttl">📋 快速问答备忘卡（助手/主播都能用）</div>
+      <div id="qa-card"></div>
+    </div>
+  </div>
+
   <div class="res-ft">
     <div class="ft-hint">转发给主播 / 截图打印贴在提词框旁</div>
     <div class="ft-btns">
@@ -444,13 +568,13 @@ var D={};
 
 // tag logic
 document.querySelectorAll('.tags').forEach(function(g){
-  var multi=['sp','pain','hook'];
+  var multi=['sp','pain','hook','sizes'];
   g.querySelectorAll('.tag').forEach(function(t){
     t.addEventListener('click',function(){
       var id=g.id;
       var isMulti=multi.indexOf(id)>=0;
       if(isMulti){
-        var maxMap={sp:3,pain:2,hook:5};
+        var maxMap={sp:3,pain:2,hook:5,sizes:10};
         var max=maxMap[id]||99;
         if(!t.classList.contains('on')){
           var cur=g.querySelectorAll('.tag.on').length;
@@ -467,14 +591,20 @@ document.querySelectorAll('.tags').forEach(function(g){
 
 function getTag(id){var el=document.querySelector('#'+id+' .tag.on');return el?el.dataset.v:'';}
 function getTags(id){var r=[];document.querySelectorAll('#'+id+' .tag.on').forEach(function(t){r.push(t.dataset.v);});return r;}
-function v(id){return document.getElementById(id).value.trim();}
+function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
 
 function gen(){
   var name=v('name'),price=v('price');
   if(!name||!price){alert('请填写款式名称和到手价');return;}
   D={
     name:name,price:+price,mkt:+(v('mktprice')||price*3),
-    mat:v('mat')||'优质面料',tgt:+(v('tgt')||200),stk:+(v('stk')||500),
+    mat:v('mat')||'优质面料',matFeel:v('mat-feel'),
+    sizes:getTags('sizes'),sizeGuide:v('size-guide'),
+    colors:v('colors'),bestColor:v('best-color'),
+    shipTime:v('ship-time')||'48小时内发货',freight:v('freight')||'已开运费险，不合适免费退',
+    shipNote:v('ship-note'),
+    match1:v('match1'),matchScene:v('match-scene'),noMatch:v('no-match'),bundle:v('bundle'),
+    tgt:+(v('tgt')||200),stk:+(v('stk')||500),
     adv:v('adv'),feeling:v('feeling'),
     cat:getTag('cat'),sp:getTags('sp'),age:getTag('age'),
     pain:getTags('pain'),style:v('style'),slot:v('slot'),hook:getTags('hook')
@@ -485,6 +615,9 @@ function gen(){
   D.save=D.mkt-D.price;
   D.dis=Math.round((1-D.price/D.mkt)*100);
   D.hook1=D.hook[0]||'整点抽免单';
+  D.sizes_str=D.sizes.length?D.sizes.join('、'):'S-XL均有';
+  D.colors_str=D.colors||'多色可选';
+  D.bestColor_str=D.bestColor||D.colors||'经典色';
 
   build();
   document.getElementById('res-title').textContent=name+' · 头部打法SOP';
@@ -552,7 +685,8 @@ function build(){
   );
 
   set('tryon-inter',
-    '好，有想看上身效果的宝贝，\n扣个'+hi('"上身"')+'主播给你们比划一下——\n\n（转一圈，侧身，展示版型）\n\n你们看！这个腰线的位置！\n是不是一下就把'+p+'的问题遮住了？\n\n还想看其他颜色/其他角度的扣' +og('"再看"')+'\n主播给你们重新走一遍！'
+    '好，有想看上身效果的宝贝，\n扣个'+hi('"上身"')+'主播给你们比划一下——\n\n（转一圈，侧身，展示版型）\n\n你们看！这个腰线的位置！\n是不是一下就把'+p+'的问题遮住了？\n\n'+(d.matFeel?'面料'+d.matFeel+'，\n这个上身的状态你们感受一下。\n\n':'')+
+    '还想看其他颜色/其他角度的扣' +og('"再看"')+'\n主播给你们重新走一遍！'
   );
 
   var qas=[
@@ -598,7 +732,8 @@ function build(){
 
   // ===== 转化 =====
   set('value',
-    '好，现在我来认真跟你们说这件'+nm+'：\n\n面料是'+d.mat+'——你们摸一下这个厚度，\n同价位能用这个面料的，\n你们去扒一扒，不多。\n\n这个版型（展示侧面），你们看，\n'+sp+'，\n就是为'+p+'的姐妹专门设计的，\n穿上去整个人的比例就不一样了。\n\n（停顿）\n这件如果放在商场，它的定位就是'+mkt+'那档次的东西。\n先记住这个感受，一会儿我说价格，\n你们会觉得我疯了。'
+    '好，现在我来认真跟你们说这件'+nm+'：\n\n面料是'+d.mat+(d.matFeel?'，'+d.matFeel:'')+'，\n同价位能用这个面料的，你们去扒一扒，不多。\n\n这个版型（展示侧面），你们看，\n'+sp+'，\n就是为'+p+'的姐妹专门设计的，\n穿上去整个人的比例就不一样了。\n\n'+(d.colors_str?'颜色有'+d.colors_str+'，\n今天卖得最快的是'+d.bestColor_str+'，\n喜欢的宝贝先下手。\n\n':'')+
+    '（停顿）\n这件如果放在商场，它的定位就是'+mkt+'那档次的东西。\n先记住这个感受，一会儿我说价格，\n你们会觉得我疯了。'
   );
 
   set('price-reveal',
@@ -611,18 +746,21 @@ function build(){
   );
 
   set('urge2',
-    '宝贝们！！！\n助手！现在还剩多少件了！\n\n（助手报数：剩'+Math.round(d.stk*0.3)+'件！）\n\n你们看！！已经卖出去这么多了！\n还在犹豫的宝贝，这条确实不多了。\n\n我告诉你，你在这儿犹豫，\n别的宝贝已经在结账了。\n不合适退就好了，运费险全包，\n但是没有了就真的什么都没了！\n\n想要的现在扣'+hi('"最后一波"')+' ！助手给你们备货！'
+    '宝贝们！！！\n助手！现在还剩多少件了！\n\n（助手报数：剩'+Math.round(d.stk*0.3)+'件！）\n\n你们看！！已经卖出去这么多了！\n还在犹豫的宝贝，这条确实不多了。\n\n我告诉你，你在这儿犹豫，\n别的宝贝已经在结账了。\n'+d.freight+'，\n买了完全没有风险！\n\n想要的现在扣'+hi('"最后一波"')+' ！助手给你们备货！'
   );
 
   set('urge3',
-    '最后5分钟！！！\n\n今天'+nm+'，¥'+pr+'，\n就剩这最后一批了，\n下播之后这个价格就收回去了，\n真的不是套路，是我们今天的直播专属价。\n\n已经拍了的宝贝跟我挥个手！\n你们太明智了，眼光绝了！\n\n还没拍的，最后机会，\n进购物车，¥'+pr+'，下单！！！\n\n5——4——3——2——1！\n助手！下架！感谢今天所有宝贝！'
+    '最后5分钟！！！\n\n今天'+nm+'，¥'+pr+'，\n就剩这最后一批了，\n下播之后这个价格就收回去了，\n真的不是套路，是我们今天的直播专属价。\n\n拍了'+d.shipTime+'！'+d.freight+'！\n\n已经拍了的宝贝跟我挥个手！\n你们太明智了，眼光绝了！\n\n还没拍的，最后机会，\n进购物车，¥'+pr+'，下单！！！\n\n5——4——3——2——1！\n助手！下架！感谢今天所有宝贝！'
   );
 
+  var sizeObjTxt = '这个简单！\n把你的身高体重打出来，\n主播现在就给你选！\n'+(d.sizeGuide?d.sizeGuide+'\n':'')+'\n选错了'+d.freight+'，\n零风险的，直接拍。';
+
   var objs=[
-    {q:'"有点贵"',a:'宝贝，我理解你说的贵。\n但你去线下找，找一件同品质同版型的，\n我们说好了，找不到在'+pr+'以内的，找到了你来跟我说。\n我们'+pr+'真的是工厂直供，砍掉了所有中间环节，\n不是我们贵，是真的值这个价。'},
-    {q:'"再想想"',a:'好，宝贝你想，但是你看库存，\n你多想5分钟，可能就没了。\n不是催你，是真的不多了——\n你要是回头找不到再找主播，\n主播给你找不到也没办法了。\n不合适可以退，但没了就是没了。'},
-    {q:'"不确定尺码"',a:'这个简单！\n把你的身高体重打出来，\n主播现在就给你选！\n我们每个尺码我都上身试过，\n我就告诉你买哪个。\n选错了运费险也全包，\n零风险的，直接拍。'},
-    {q:'"等下次活动"',a:'宝贝，我告诉你，\n今天这个价格就是活动价了，\n我们平时不打折的，\n今天是因为要冲销量才给你们这个价，\n等到下次，库存还不一定有，\n这个价格更不一定有。今天是最好的时机。'}
+    {q:'"有点贵"',a:'宝贝，我理解你说的贵。\n但你去线下找，找一件同品质同版型的，\n我们说好了，找不到在'+pr+'以内的，找到了你来跟我说。\n面料是'+d.mat+(d.matFeel?'，'+d.matFeel:'')+'\n这个材质在商场就是'+mkt+'的价，\n我们今天工厂直供，真的不贵。'},
+    {q:'"再想想"',a:'好，宝贝你想，但是你看库存，\n你多想5分钟，可能就没了。\n不是催你，是真的不多了——\n'+d.freight+'，\n买了不合适退就好了，没有任何风险，\n但是没货了就真的什么都没了。'},
+    {q:'"不确定尺码"',a:sizeObjTxt},
+    {q:'"等下次活动"',a:'宝贝，我告诉你，\n今天这个价格就是活动价了，\n我们平时不打折的，\n今天是因为要冲销量才给你们这个价，\n等到下次，库存还不一定有，\n这个价格更不一定有。今天是最好的时机。'},
+    {q:'"多久能到？"',a:'今天拍的，'+d.shipTime+'！\n'+(d.shipNote?d.shipNote+'\n':'')+'\n下单备注"加急"，助手优先安排发货！'}
   ];
   var oHtml='';
   objs.forEach(function(o){oHtml+='<div class="obj"><div class="obj-q">👩 顾客：'+o.q+'</div><div class="sb sb-bl" style="font-size:12px;line-height:1.75;">'+o.a+'</div></div>';});
@@ -638,6 +776,87 @@ function build(){
     {v:'每15min',l:'说关注频率',t:'不频繁不遗忘'}
   ];
   setH('kpis',kpiData.map(function(k){return '<div class="kpi"><div class="kpi-v">'+k.v+'</div><div class="kpi-l">'+k.l+'</div><div class="kpi-t">'+k.t+'</div></div>';}).join(''));
+
+  // ===== 产品卡 =====
+  // 面料卡
+  var fabTxt = '【面料介绍话术】\n\n';
+  fabTxt += '来，我认真跟姐妹们说一下这件'+d.name+'的面料——\n\n';
+  fabTxt += '用的是'+d.mat+(d.matFeel?'，'+d.matFeel:'')+'。\n\n';
+  fabTxt += '同价位的衣服很多用的是普通化纤，\n这件我当时选面料选了很久，\n就是要找这种'+d.mat+'的，\n穿上去的感觉完全不一样。\n\n';
+  fabTxt += '想知道面料好不好的姐妹，\n你去摸一摸，对比一下你家衣柜里的衣服，\n马上就能感受出来差距。';
+  setH('fab-card','<div class="sb sb-pk">'+fabTxt+'</div>');
+
+  // 尺码卡
+  var sizeTxt = '【尺码选购话术】\n\n';
+  sizeTxt += '说一下尺码，咱们这件'+d.name+'有：';
+  sizeTxt += d.sizes_str+'。\n\n';
+  if(d.sizeGuide){sizeTxt += d.sizeGuide+'\n\n';}
+  sizeTxt += '不确定尺码的宝贝，\n直接把身高体重打在评论区，\n主播帮你选！\n\n';
+  if(d.colors_str){
+    sizeTxt += '颜色有：'+d.colors_str+'。\n';
+    if(d.bestColor_str){sizeTxt += '今天卖得最快的是'+d.bestColor_str+'，\n喜欢的宝贝先下手。\n';}
+  }
+  setH('size-card','<div class="sb sb-og">'+sizeTxt+'</div>');
+
+  // 出货卡
+  var shipTxt = '【出货时间话术】\n\n';
+  shipTxt += '说发货时间，今天拍的，';
+  shipTxt += d.shipTime+'！\n\n';
+  if(d.shipNote){shipTxt += d.shipNote+'\n\n';}
+  shipTxt += d.freight+'。\n\n';
+  shipTxt += '退换不用找理由，不喜欢就退，\n买了完全没有风险！\n\n';
+  shipTxt += '着急要的宝贝，下单备注"加急"，\n助手看到会帮你往前排，优先发！';
+  setH('ship-card','<div class="sb sb-gr">'+shipTxt+'</div>');
+
+  // 搭配卡
+  var matchTxt = '【搭配建议话术】\n\n';
+  if(d.match1){
+    matchTxt += '说一下这件'+d.name+'怎么搭：\n\n'+d.match1+'\n\n';
+  }
+  if(d.matchScene){
+    matchTxt += '适合场合：\n'+d.matchScene+'\n\n';
+  }
+  matchTxt += '姐妹们，好的衣服就是这个——\n一件能搭出好几种风格，\n不挑场合，穿着省心。';
+  setH('match-card','<div class="sb sb-pu">'+matchTxt+'</div>');
+
+  // 不适合人群
+  var noMatchTxt = '';
+  if(d.noMatch){
+    noMatchTxt = '<div class="sb sb-yw">【诚实说明——建立信任用】\n\n我说实话，这件'+d.name+'有些情况不太合适：\n\n'+d.noMatch+'\n\n说这个是因为我不想让宝贝们买了退，\n买对了才是真正帮到你。\n\n适合你的宝贝就直接下单，我保证你不亏！</div>';
+  } else {
+    noMatchTxt = '<div class="notice">未填写不适合人群说明。建议填写——诚实说反而能增加信任，减少退货。</div>';
+  }
+  setH('nomatch-card',noMatchTxt);
+
+  // 连带购买
+  var bundleTxt = '';
+  if(d.bundle){
+    bundleTxt = '<div class="sb sb-og">【连带购买话术】\n\n对了，今天有个好消息告诉你们！\n\n'+d.bundle+'\n\n已经拍了这件的宝贝，\n看看购物车里能不能凑一下，\n能多省一笔是一笔，主播帮你算！</div><button class="cp" onclick="cpDirect(this)">📋 复制连带话术</button>';
+  } else {
+    bundleTxt = '<div class="notice">未填写连带产品信息。填写后可生成提升客单价的连带购买话术。</div>';
+  }
+  setH('bundle-card',bundleTxt);
+
+  // 快速问答备忘卡
+  var qaRows=[
+    {q:'这件什么面料？',a:d.mat+(d.matFeel?'，'+d.matFeel:'')},
+    {q:'有哪些码？',a:d.sizes_str||'请查看商品详情页'},
+    {q:'我多少码合适？',a:d.sizeGuide?d.sizeGuide.slice(0,60)+'…':'说身高体重，主播帮你选'},
+    {q:'有什么颜色？',a:d.colors_str||'见商品详情'},
+    {q:'什么时候发货？',a:d.shipTime+(d.shipNote?'，'+d.shipNote:'')},
+    {q:'可以退换吗？',a:d.freight},
+    {q:'怎么搭配？',a:d.match1?d.match1.slice(0,50)+'…':'多种搭配，见主播演示'},
+    {q:'适合什么场合？',a:d.matchScene?d.matchScene.slice(0,40)+'…':d.cat+'日常穿搭'}
+  ];
+  var qaHtml='<div style="display:grid;gap:6px;">';
+  qaRows.forEach(function(r){
+    qaHtml+='<div style="background:#F8F5F8;border-radius:8px;padding:8px 10px;display:flex;gap:8px;align-items:flex-start;">';
+    qaHtml+='<span style="font-size:11px;font-weight:600;color:var(--pk);flex-shrink:0;min-width:90px;">Q: '+r.q+'</span>';
+    qaHtml+='<span style="font-size:12px;color:var(--text);line-height:1.5;">'+r.a+'</span>';
+    qaHtml+='</div>';
+  });
+  qaHtml+='</div>';
+  setH('qa-card',qaHtml);
 }
 
 function tab(i){
