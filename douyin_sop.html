@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>抖音女装直播爆款SOP生成器</title>
+<style>
+:root {
+  --pink: #FF2D55;
+  --pink-light: #FF6B8A;
+  --pink-pale: #FFF0F3;
+  --orange: #FF6B35;
+  --dark: #1A1A2E;
+  --dark2: #16213E;
+  --text: #2D2D3A;
+  --text2: #666;
+  --border: #F0D6DB;
+  --white: #FFFFFF;
+  --success: #00C896;
+  --warn: #FF9500;
+  --card-bg: #FAFAFA;
+  --shadow: 0 2px 16px rgba(255,45,85,0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", sans-serif; background: #F7F0F2; color: var(--text); min-height: 100vh; }
+
+.hero { background: linear-gradient(135deg, #FF2D55 0%, #FF6B35 100%); padding: 24px 16px 32px; color: white; }
+.hero-badge { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.35); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 500; margin-bottom: 10px; letter-spacing: 0.5px; }
+.hero h1 { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 6px; }
+.hero p { font-size: 13px; opacity: 0.88; line-height: 1.6; }
+.hero-steps { display: flex; gap: 6px; margin-top: 14px; }
+.hero-step { flex: 1; background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 6px; text-align: center; }
+.hero-step .n { font-size: 18px; font-weight: 700; }
+.hero-step .l { font-size: 10px; opacity: 0.85; margin-top: 2px; }
+
+.container { padding: 16px; max-width: 640px; margin: 0 auto; }
+
+.section { margin-bottom: 20px; }
+.section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.section-num { width: 26px; height: 26px; background: var(--pink); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.section-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.section-sub { font-size: 11px; color: var(--text2); margin-left: auto; }
+
+.card { background: var(--white); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.card + .card { margin-top: 10px; }
+
+.form-row { margin-bottom: 14px; }
+.form-row:last-child { margin-bottom: 0; }
+label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+label .req { color: var(--pink); margin-left: 2px; }
+input[type=text], input[type=number], select, textarea {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 14px; font-family: inherit;
+  background: white; color: var(--text); outline: none; transition: border-color .2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--pink); }
+textarea { resize: none; line-height: 1.5; min-height: 72px; }
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%23999'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tag-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.tag { padding: 5px 10px; border: 1.5px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--text2); cursor: pointer; transition: all .15s; background: white; }
+.tag.active { background: var(--pink-pale); border-color: var(--pink); color: var(--pink); font-weight: 500; }
+
+.price-row { display: flex; gap: 8px; }
+.price-row input { flex: 1; }
+.price-row .sep { display: flex; align-items: center; font-size: 13px; color: var(--text2); flex-shrink: 0; padding-top: 2px; }
+
+.gen-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #FF2D55, #FF6B35); color: white; border: none; border-radius: var(--radius); font-size: 16px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(255,45,85,0.35); transition: opacity .2s; }
+.gen-btn:active { opacity: 0.85; }
+
+.result-area { display: none; margin-top: 24px; }
+.result-area.show { display: block; }
+
+.result-header { background: linear-gradient(135deg, #1A1A2E, #16213E); color: white; border-radius: var(--radius) var(--radius) 0 0; padding: 16px; text-align: center; }
+.result-header h2 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.result-header p { font-size: 12px; opacity: 0.7; }
+
+.sop-nav { display: flex; overflow-x: auto; gap: 0; background: #F0EAF0; border-bottom: 1px solid var(--border); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.sop-nav::-webkit-scrollbar { display: none; }
+.sop-tab { flex-shrink: 0; padding: 10px 14px; font-size: 12px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2.5px solid transparent; white-space: nowrap; transition: all .15s; }
+.sop-tab.active { color: var(--pink); border-bottom-color: var(--pink); background: white; }
+
+.sop-panel { display: none; background: white; }
+.sop-panel.active { display: block; }
+
+.sop-section { padding: 16px; border-bottom: 1px solid #F5F0F5; }
+.sop-section:last-child { border-bottom: none; }
+.sop-section-title { font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.sop-section-title .icon { width: 20px; height: 20px; background: var(--pink-pale); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+
+.script-box { background: var(--pink-pale); border-left: 3px solid var(--pink); border-radius: 0 8px 8px 0; padding: 12px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+.script-box.alt { background: #FFF8F0; border-left-color: var(--orange); }
+.script-box.dark { background: #F0F0F8; border-left-color: #5856D6; }
+.script-box.green { background: #F0FBF7; border-left-color: var(--success); }
+
+.timing-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.timing-badge { flex-shrink: 0; background: var(--dark); color: white; border-radius: 6px; padding: 3px 8px; font-size: 10px; font-weight: 500; margin-top: 2px; }
+.timing-badge.pink { background: var(--pink); }
+.timing-badge.orange { background: var(--orange); }
+.timing-badge.green { background: var(--success); }
+.timing-badge.purple { background: #5856D6; }
+.timing-text { font-size: 13px; line-height: 1.65; color: var(--text); flex: 1; }
+.timing-text strong { color: var(--pink); }
+
+.checklist { list-style: none; }
+.checklist li { display: flex; gap: 8px; align-items: flex-start; padding: 5px 0; font-size: 13px; line-height: 1.6; color: var(--text); }
+.checklist li::before { content: "✓"; color: var(--success); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.checklist li.warn::before { content: "⚡"; color: var(--warn); }
+.checklist li.tip::before { content: "💡"; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.kpi-card { background: var(--pink-pale); border-radius: 10px; padding: 10px 8px; text-align: center; }
+.kpi-val { font-size: 18px; font-weight: 700; color: var(--pink); }
+.kpi-label { font-size: 10px; color: var(--text2); margin-top: 2px; }
+.kpi-target { font-size: 10px; color: var(--success); margin-top: 1px; }
+
+.copy-btn { width: 100%; padding: 11px; border: 1.5px solid var(--pink); border-radius: 8px; background: white; color: var(--pink); font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 10px; transition: all .15s; }
+.copy-btn:active { background: var(--pink-pale); }
+
+.result-footer { background: white; border-top: 1px solid var(--border); padding: 14px 16px; border-radius: 0 0 var(--radius) var(--radius); }
+.share-hint { text-align: center; font-size: 12px; color: var(--text2); margin-bottom: 10px; }
+.share-actions { display: flex; gap: 8px; }
+.share-btn { flex: 1; padding: 12px 8px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; text-align: center; }
+.share-btn.primary { background: var(--pink); color: white; }
+.share-btn.secondary { background: var(--dark); color: white; }
+
+.highlight { background: rgba(255,45,85,0.1); padding: 1px 4px; border-radius: 4px; color: var(--pink); font-weight: 500; }
+
+.tip-box { background: #FFFBF0; border: 1px solid #FFE0A0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #7A5A00; line-height: 1.6; margin-top: 8px; }
+.tip-box strong { color: #996600; }
+
+.progress { width: 100%; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; margin-top: 10px; }
+.progress-bar { height: 4px; background: white; border-radius: 2px; width: 0%; transition: width .4s; }
+
+.step-indicator { display: flex; gap: 4px; margin-top: 12px; }
+.step-dot { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.3); transition: background .3s; }
+.step-dot.done { background: white; }
+
+input::placeholder, textarea::placeholder { color: #CCC; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">🔥 抖音女装直播 · 爆款SOP生成器</div>
+  <h1>填写款式信息<br>一键生成完整直播方案</h1>
+  <p>涵盖开播脚本、逼单话术、节奏安排、数据目标、库存策略全套流程</p>
+  <div class="hero-steps">
+    <div class="hero-step"><div class="n">1</div><div class="l">填信息</div></div>
+    <div class="hero-step"><div class="n">2</div><div class="l">生成SOP</div></div>
+    <div class="hero-step"><div class="n">3</div><div class="l">直接用</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">款式基本信息</div>
+  </div>
+  <div class="card">
+    <div class="form-row">
+      <label>款式名称 <span class="req">*</span></label>
+      <input type="text" id="item-name" placeholder="例：法式碎花长裙、显瘦小西装" maxlength="30">
+    </div>
+    <div class="form-row grid2">
+      <div>
+        <label>到手价（元）<span class="req">*</span></label>
+        <input type="number" id="price" placeholder="99" min="1">
+      </div>
+      <div>
+        <label>原价/吊牌价</label>
+        <input type="number" id="origin-price" placeholder="299" min="1">
+      </div>
+    </div>
+    <div class="form-row">
+      <label>款式品类 <span class="req">*</span></label>
+      <div class="tag-group" id="category-tags">
+        <div class="tag active" data-val="连衣裙">连衣裙</div>
+        <div class="tag" data-val="上衣">上衣</div>
+        <div class="tag" data-val="外套">外套</div>
+        <div class="tag" data-val="裤装">裤装</div>
+        <div class="tag" data-val="半裙">半裙</div>
+        <div class="tag" data-val="套装">套装</div>
+        <div class="tag" data-val="针织">针织</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>核心卖点（选2-3个）</label>
+      <div class="tag-group" id="selling-tags">
+        <div class="tag" data-val="显瘦">显瘦</div>
+        <div class="tag" data-val="遮肉">遮肉</div>
+        <div class="tag" data-val="显高">显高</div>
+        <div class="tag" data-val="气质">气质</div>
+        <div class="tag" data-val="减龄">减龄</div>
+        <div class="tag" data-val="通勤">通勤</div>
+        <div class="tag" data-val="约会">约会</div>
+        <div class="tag" data-val="日常">日常</div>
+        <div class="tag" data-val="小个子">小个子</div>
+        <div class="tag" data-val="大码友好">大码友好</div>
+        <div class="tag" data-val="显白">显白</div>
+        <div class="tag" data-val="质感">质感</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>面料/材质特点</label>
+      <input type="text" id="material" placeholder="例：100%桑蚕丝、空气棉、冰丝、精纺羊毛">
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">目标客群 & 场景</div>
+  </div>
+  <div class="card">
+    <div class="form-row">
+      <label>主要受众年龄段</label>
+      <div class="tag-group" id="age-tags">
+        <div class="tag" data-val="18-25岁">18-25岁</div>
+        <div class="tag active" data-val="25-35岁">25-35岁</div>
+        <div class="tag" data-val="35-45岁">35-45岁</div>
+        <div class="tag" data-val="45岁以上">45岁以上</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>适合穿着场景（可多选）</label>
+      <div class="tag-group" id="scene-tags">
+        <div class="tag active" data-val="日常逛街">日常逛街</div>
+        <div class="tag" data-val="职场通勤">职场通勤</div>
+        <div class="tag" data-val="约会">约会</div>
+        <div class="tag" data-val="聚会">聚会</div>
+        <div class="tag" data-val="旅游度假">旅游度假</div>
+        <div class="tag" data-val="居家">居家</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>身材痛点（精准定位）</label>
+      <div class="tag-group" id="pain-tags">
+        <div class="tag" data-val="腰粗">腰粗</div>
+        <div class="tag" data-val="腿粗">腿粗</div>
+        <div class="tag" data-val="胯宽">胯宽</div>
+        <div class="tag" data-val="手臂粗">手臂粗</div>
+        <div class="tag" data-val="个子矮">个子矮</div>
+        <div class="tag" data-val="偏胖">偏胖</div>
+        <div class="tag" data-val="肩宽">肩宽</div>
+        <div class="tag" data-val="胸大">胸大</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">直播策略设置</div>
+  </div>
+  <div class="card">
+    <div class="form-row grid2">
+      <div>
+        <label>本场目标销量（件）</label>
+        <input type="number" id="target-sales" placeholder="200" min="1">
+      </div>
+      <div>
+        <label>备货数量（件）</label>
+        <input type="number" id="stock" placeholder="500" min="1">
+      </div>
+    </div>
+    <div class="form-row grid2">
+      <div>
+        <label>是否主推款</label>
+        <select id="is-hero">
+          <option value="yes">是，主推爆款</option>
+          <option value="no">否，配合款</option>
+        </select>
+      </div>
+      <div>
+        <label>上播时段</label>
+        <select id="time-slot">
+          <option value="晚高峰">晚高峰 19-22点</option>
+          <option value="午间">午间 11-14点</option>
+          <option value="早间">早间 7-10点</option>
+          <option value="深夜">深夜 22-24点</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>主播风格定位</label>
+      <div class="tag-group" id="style-tags">
+        <div class="tag active" data-val="亲切姐妹">亲切姐妹感</div>
+        <div class="tag" data-val="专业时尚">专业时尚博主</div>
+        <div class="tag" data-val="接地气">接地气实惠派</div>
+        <div class="tag" data-val="精致优雅">精致优雅感</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>限时优惠策略</label>
+      <div class="tag-group" id="promo-tags">
+        <div class="tag active" data-val="库存倒计时">库存倒计时</div>
+        <div class="tag" data-val="限时价">限时价</div>
+        <div class="tag" data-val="买赠">买赠活动</div>
+        <div class="tag" data-val="专属优惠券">专属优惠券</div>
+        <div class="tag" data-val="凑单满减">凑单满减</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>竞品对比优势</label>
+      <input type="text" id="advantage" placeholder="例：同款商场卖599，我们直播价只要99">
+    </div>
+  </div>
+</div>
+
+<button class="gen-btn" id="gen-btn" onclick="generateSOP()">
+  ⚡ 立即生成完整直播SOP
+</button>
+
+<div class="result-area" id="result-area">
+  <div class="result-header">
+    <h2 id="result-title">法式碎花连衣裙 · 完整直播SOP</h2>
+    <p id="result-subtitle">专属定制 · 直接上阵使用</p>
+  </div>
+
+  <div class="sop-nav" id="sop-nav">
+    <div class="sop-tab active" onclick="switchTab(0)">📋 开播准备</div>
+    <div class="sop-tab" onclick="switchTab(1)">🎬 直播节奏</div>
+    <div class="sop-tab" onclick="switchTab(2)">💬 核心话术</div>
+    <div class="sop-tab" onclick="switchTab(3)">⚡ 逼单脚本</div>
+    <div class="sop-tab" onclick="switchTab(4)">📦 库存策略</div>
+    <div class="sop-tab" onclick="switchTab(5)">📊 数据目标</div>
+  </div>
+
+  <!-- TAB 0: 开播准备 -->
+  <div class="sop-panel active" id="tab-0">
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🎯</span>上播前60分钟检查清单</div>
+      <ul class="checklist" id="prep-checklist"></ul>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">📸</span>开播预热话术（提前30分钟发）</div>
+      <div class="script-box" id="preheat-script"></div>
+      <button class="copy-btn" onclick="copyText('preheat-script')">📋 复制预热文案</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🎨</span>直播间布景要点</div>
+      <ul class="checklist" id="stage-list"></ul>
+    </div>
+  </div>
+
+  <!-- TAB 1: 直播节奏 -->
+  <div class="sop-panel" id="tab-1">
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">⏱</span>单品直播节奏（60分钟爆款周期）</div>
+      <div id="rhythm-timeline"></div>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🔄</span>款式切换时机判断</div>
+      <ul class="checklist" id="switch-list"></ul>
+    </div>
+  </div>
+
+  <!-- TAB 2: 核心话术 -->
+  <div class="sop-panel" id="tab-2">
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🎤</span>开场破冰话术</div>
+      <div class="script-box" id="open-script"></div>
+      <button class="copy-btn" onclick="copyText('open-script')">📋 复制话术</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">👗</span>产品介绍话术（穿搭维度）</div>
+      <div class="script-box alt" id="intro-script"></div>
+      <button class="copy-btn" onclick="copyText('intro-script')">📋 复制话术</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">💎</span>价值塑造话术</div>
+      <div class="script-box dark" id="value-script"></div>
+      <button class="copy-btn" onclick="copyText('value-script')">📋 复制话术</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">❤️</span>互动引导话术</div>
+      <div class="script-box green" id="interact-script"></div>
+      <button class="copy-btn" onclick="copyText('interact-script')">📋 复制话术</button>
+    </div>
+  </div>
+
+  <!-- TAB 3: 逼单脚本 -->
+  <div class="sop-panel" id="tab-3">
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🔥</span>第一波逼单（直播20分钟）</div>
+      <div class="script-box" id="urge1-script"></div>
+      <button class="copy-btn" onclick="copyText('urge1-script')">📋 复制逼单话术</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">⚡</span>第二波逼单（直播40分钟）</div>
+      <div class="script-box alt" id="urge2-script"></div>
+      <button class="copy-btn" onclick="copyText('urge2-script')">📋 复制逼单话术</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">💥</span>最终收割话术（倒计时5分钟）</div>
+      <div class="script-box dark" id="urge3-script"></div>
+      <button class="copy-btn" onclick="copyText('urge3-script')">📋 复制话术</button>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">💬</span>常见异议处理话术</div>
+      <div id="objection-list"></div>
+    </div>
+  </div>
+
+  <!-- TAB 4: 库存策略 -->
+  <div class="sop-panel" id="tab-4">
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">📦</span>库存分配策略</div>
+      <div id="stock-strategy"></div>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">⚠️</span>库存播报话术节点</div>
+      <div id="stock-scripts"></div>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🔙</span>售后减损策略</div>
+      <ul class="checklist" id="aftercare-list"></ul>
+    </div>
+  </div>
+
+  <!-- TAB 5: 数据目标 -->
+  <div class="sop-panel" id="tab-5">
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">📊</span>本场核心KPI目标</div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🚦</span>实时数据预警线</div>
+      <div id="alert-lines"></div>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">📈</span>复盘核心指标清单</div>
+      <ul class="checklist" id="review-list"></ul>
+    </div>
+    <div class="sop-section">
+      <div class="sop-section-title"><span class="icon">🔄</span>下播后24小时动作清单</div>
+      <ul class="checklist" id="post-list"></ul>
+    </div>
+  </div>
+
+  <div class="result-footer">
+    <div class="share-hint">长按截图保存 / 转发给主播助手</div>
+    <div class="share-actions">
+      <button class="share-btn primary" onclick="copyAllSOP()">📋 复制全部SOP</button>
+      <button class="share-btn secondary" onclick="resetForm()">🔄 重新填写</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var formData = {};
+
+document.querySelectorAll('.tag-group').forEach(function(group) {
+  group.querySelectorAll('.tag').forEach(function(tag) {
+    tag.addEventListener('click', function() {
+      var multi = ['selling-tags','scene-tags','pain-tags','promo-tags'];
+      var isMulti = multi.indexOf(group.id) >= 0;
+      if (isMulti) {
+        tag.classList.toggle('active');
+      } else {
+        group.querySelectorAll('.tag').forEach(function(t){ t.classList.remove('active'); });
+        tag.classList.add('active');
+      }
+    });
+  });
+});
+
+function getTagValues(groupId) {
+  var vals = [];
+  document.querySelectorAll('#'+groupId+' .tag.active').forEach(function(t){
+    vals.push(t.dataset.val);
+  });
+  return vals;
+}
+
+function getActiveTag(groupId) {
+  var el = document.querySelector('#'+groupId+' .tag.active');
+  return el ? el.dataset.val : '';
+}
+
+function generateSOP() {
+  var name = document.getElementById('item-name').value.trim();
+  var price = document.getElementById('price').value;
+  var originPrice = document.getElementById('origin-price').value;
+  var material = document.getElementById('material').value.trim();
+  var targetSales = document.getElementById('target-sales').value || '200';
+  var stock = document.getElementById('stock').value || '500';
+  var advantage = document.getElementById('advantage').value.trim();
+
+  if (!name || !price) {
+    alert('请填写款式名称和到手价格');
+    return;
+  }
+
+  formData = {
+    name: name,
+    price: price,
+    originPrice: originPrice || Math.round(price * 3),
+    material: material || '优质面料',
+    targetSales: parseInt(targetSales),
+    stock: parseInt(stock),
+    advantage: advantage,
+    category: getActiveTag('category-tags'),
+    sellingPoints: getTagValues('selling-tags'),
+    age: getActiveTag('age-tags'),
+    scenes: getTagValues('scene-tags'),
+    pains: getTagValues('pain-tags'),
+    isHero: document.getElementById('is-hero').value,
+    timeSlot: document.getElementById('time-slot').value,
+    hostStyle: getActiveTag('style-tags'),
+    promos: getTagValues('promo-tags')
+  };
+
+  buildSOP();
+
+  document.getElementById('result-title').textContent = name + ' · 完整直播SOP';
+  document.getElementById('result-subtitle').textContent =
+    formData.category + ' | 到手价¥' + price + ' | 目标' + targetSales + '件';
+
+  var area = document.getElementById('result-area');
+  area.classList.add('show');
+  setTimeout(function(){ area.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+}
+
+function buildSOP() {
+  var d = formData;
+  var sp = d.sellingPoints.join('、') || '时尚优雅';
+  var sc = d.scenes.join('、') || '日常穿搭';
+  var pain = d.pains.length > 0 ? d.pains[0] : '身材不完美';
+  var discount = d.originPrice ? Math.round((1 - d.price/d.originPrice)*100) : 0;
+
+  // TAB 0 准备
+  setText('prep-checklist', '', buildChecklist([
+    '镜头前试穿检查：上下身搭配、灯光角度确认',
+    '本款库存数量在后台确认，分批上架设置好',
+    '直播间话术小卡片打印贴在提词框旁',
+    '准备好同款不同颜色/码数的备品',
+    '助手准备好评论区抢楼文案',
+    '商品链接提前上架，测试下单流程畅通',
+    d.promos.indexOf('库存倒计时') >= 0 ? '库存倒计时插件设置好（建议设低于实际库存的70%）' : '优惠券/活动提前配置并测试',
+    '手机备用充电宝、直播设备信号检查'
+  ]));
+
+  setHTML('preheat-script', '姐妹们！今晚' + d.timeSlot + '直播间重磅来袭！\n\n本次主推：【' + d.name + '】\n到手价仅需 ¥' + d.price + (d.originPrice ? '（原价¥' + d.originPrice + '，直接省' + (d.originPrice - d.price) + '元）' : '') + '\n\n' + (sp ? '核心亮点：' + sp + '\n' : '') + (sc ? '超适合' + sc + '场合穿\n' : '') + '\n数量有限！提前锁定心仪码数，准时进直播间抢！\n👇点击预约提醒，晚来一步就没了！');
+
+  setText('stage-list', '', buildChecklist([
+    '纯色简洁背景（白/米/浅灰），突出服装颜色',
+    '环形补光灯 + 侧面辅光，消除阴影让颜色显真',
+    '主播站立位置在画面中央偏左，留右侧互动区',
+    '服装陈列架在背景可见位置展示备货感',
+    '价格牌/福利牌放在画面左下角常驻',
+    '准备好全身镜，展示整体穿搭效果',
+    d.pains.indexOf('个子矮') >= 0 ? '高跟鞋或增高鞋上镜演示小个子穿搭效果' : '清晰展示版型轮廓的站姿与走动效果'
+  ]));
+
+  // TAB 1 节奏
+  setHTML('rhythm-timeline', buildTimeline([
+    ['pink','0-5分钟','入场暖场','点名打招呼，说今晚播出计划，<strong>不急于介绍产品</strong>，先积累人气'],
+    ['orange','5-15分钟','产品首次亮相','穿上' + d.name + '亮相，正面/侧面/背面展示，先不报价，吊胃口'],
+    ['purple','15-25分钟','深度产品讲解','材质演示、细节展示、说核心卖点（' + sp + '），真实上身展示版型'],
+    ['pink','25-35分钟','第一波逼单','<strong>首次报价</strong>：¥' + d.price + (d.originPrice ? '（打' + discount + '折）' : '') + '，启动库存播报，引导下单'],
+    ['green','35-45分钟','互动收割期','回复弹幕答疑，处理"多大码""颜色"等问题，持续展示穿着效果'],
+    ['orange','45-55分钟','第二波逼单','强调库存紧张，展示已拍人数，再次强化价值，<strong>最强力逼单</strong>'],
+    ['dark','55-60分钟','收尾准备切款','倒计时5分钟话术，感谢已拍用户，预告下一款，保留话题钩子']
+  ]));
+
+  setText('switch-list', '', buildChecklist([
+    '当前款互动率低于1%超过3分钟，立即切换',
+    '连续5分钟无新增订单，考虑切款或重新逼单',
+    '弹幕中出现大量"下一款"留言时顺势切换',
+    '库存预警数量（' + Math.round(d.stock * 0.15) + '件）到达时最后逼单后切款',
+    '同一款上播超过75分钟必须切换，避免观众流失',
+    '当人气上升时是继续主推时机，人气下滑再切款'
+  ]));
+
+  // TAB 2 话术
+  setHTML('open-script', '哎姐妹们好！欢迎来到直播间～今天给大家带来一款我自己穿了就离不开的' + d.category + '！\n\n就是我现在身上这件【' + d.name + '】，' + sp + (pain !== '身材不完美' ? '，特别适合有' + pain + '困扰的姐妹，今天亲测之后感觉真的绝了！' : '，上身效果比我想象的还要好！') + '\n\n新来的宝贝扣个1，认识一下～老粉们直接扣666，咱们马上说价格！');
+
+  setHTML('intro-script', '姐妹们你们看，这件' + d.name + '的面料是' + d.material + '，\n\n' + (sp ? '重点说' + d.sellingPoints[0] + '这个点：' : '重点是') + '你们看我侧身——是不是完全看不出' + pain + '的问题？这个版型设计真的是专门针对' + (pain !== '身材不完美' ? pain + '的姐妹' : '东方女性身材比例') + '定制的。\n\n' + (sc ? '你们想象一下' + d.scenes[0] + '的时候穿这件，是不是整个人的气质就不一样了？' : '日常穿搭、出门约会，这一件就够了。') + '\n\n而且这个颜色我专门选了好久，不挑肤色，显白！姐妹们站我边上都好看！');
+
+  setHTML('value-script', (d.originPrice ? '这件' + d.name + '你们去商场看，同款同品质的最少要' + d.originPrice + '，我今天直播间给你们' : '我去工厂拿货的时候就是冲着性价比去的，') + '只要 ¥' + d.price + '，就这一个价，直播间独家！\n\n' + (d.advantage ? d.advantage + '\n\n' : '') + '而且我们是品牌直供，不经过中间商，质量这块我是100%保证的，收到不满意7天无理由退换，运费险已经开通了，买了完全没有风险！');
+
+  setHTML('interact-script', '姐妹们，觉得这件好看的扣个"想要"！\n\n已经拍了的宝贝们扣个"已拍"，我统计一下今天多少姐妹和我一起入了～\n\n觉得穿上效果不错的扣"绝了"！\n\n有不确定尺码的宝贝，直接把你的身高体重打在公屏上，我来帮你选码，或者私信客服都可以！\n\n还在犹豫的姐妹们告诉我你在纠结什么，我来帮你做决定！');
+
+  // TAB 3 逼单
+  setHTML('urge1-script', '好！开门红！今天这件' + d.name + '，到手价就是 ¥' + d.price + '，助手现在上链接！\n\n需要的姐妹手速快一点，我们今天这批货一共就备了' + d.stock + '件，卖完不补！\n\n新来的宝贝们不要走！今天买' + d.name + '这个价格是今年最低价，真的！我就在直播间给你们卷价格，错过今天不知道下次什么时候还能这个价！\n\n想要的扣"拍了"！助手会优先给扣"拍了"的宝贝备货！');
+
+  setHTML('urge2-script', '姐妹们！' + d.name + '现在已经卖出去' + Math.round(d.targetSales * 0.6) + '件了！剩余库存不多了！！\n\n还没有拍的宝贝，现在就是最后机会，真的！助手公屏报一下库存数量！\n\n（助手：还剩' + Math.round(d.stock * 0.3) + '件！！！）\n\n你们看！说没有就没了！' + (d.promos.indexOf('库存倒计时') >= 0 ? '倒计时已经开始了，' : '') + '不管几件颜色的几件码数，先拍先得！不合适还可以退，但是没货就真的什么都没了！');
+
+  setHTML('urge3-script', '最后5分钟！最后5分钟！' + d.name + '今天就剩最后这点库存了！\n\n我说真的，' + (d.promos.indexOf('限时价') >= 0 ? '这个价格' + d.price + '元今天过了就恢复原价，' : '') + '一直犹豫的宝贝别再等了，这件真的值这个价，我自己都备了两件！\n\n已经拍了的宝贝们跟我挥手！你们眼光真的很好！还没拍的最后机会了！链接在购物车里！赶紧！！！');
+
+  var objections = [
+    { q: '"不知道尺码怎么选"', a: '姐妹说你身高体重，我来帮你选！我们尺码是标准/偏大码，我每件都上身试过，我给你精准推荐！' },
+    { q: '"颜色在屏幕上看不准"', a: '我理解！我专门在不同光线下展示这件，实物颜色就是这样的，而且我们开了运费险，不合适直接退！' },
+    { q: '"有点贵"', a: '姐妹你去商场看同款同品质的至少要' + (d.originPrice||'三倍价格') + '，我们今天' + d.price + '已经是全年最低了，而且这个面料摸着就知道值！' },
+    { q: '"再看看"', a: '姐妹说实话，你在等什么呢？今天这价格和这批货，等你考虑完就没了！风险是零，不合适退！' },
+    { q: '"身材不好看"', a: '就是为你设计的！你看我，' + (pain !== '身材不完美' ? pain + '的问题，穿上这件' : '这件') + sp + '，完全遮住了！' }
+  ];
+  var objHtml = '';
+  objections.forEach(function(o){
+    objHtml += '<div style="margin-bottom:10px"><div style="font-size:12px;font-weight:600;color:#FF2D55;margin-bottom:4px">顾客：' + o.q + '</div><div class="script-box green" style="font-size:12px">' + o.a + '</div></div>';
+  });
+  document.getElementById('objection-list').innerHTML = objHtml;
+
+  // TAB 4 库存
+  var s = d.stock;
+  var stockHtml = '<div class="timing-row"><div class="timing-badge pink">首波</div><div class="timing-text">放出 <strong>' + Math.round(s*0.3) + '件</strong>（总库存30%），制造稀缺感，快速起量</div></div>';
+  stockHtml += '<div class="timing-row"><div class="timing-badge orange">补货</div><div class="timing-text">首波售罄后补 <strong>' + Math.round(s*0.4) + '件</strong>（40%），展示"卖疯了紧急补货"效果</div></div>';
+  stockHtml += '<div class="timing-row"><div class="timing-badge purple">尾款</div><div class="timing-text">最终放剩余 <strong>' + Math.round(s*0.3) + '件</strong>（30%），配合最终逼单清仓</div></div>';
+  stockHtml += '<div class="tip-box"><strong>库存心理学：</strong>展示"已售X件"比说"剩余Y件"更有购买驱动力。建议助手每隔8-10分钟公屏播报已售数量，不播报总库存。</div>';
+  document.getElementById('stock-strategy').innerHTML = stockHtml;
+
+  var stockScripts = '<div class="timing-row"><div class="timing-badge green">10%</div><div class="timing-text">已售' + Math.round(d.targetSales*0.1) + '件：「已经有这么多姐妹拍了！质量绝对靠谱！」</div></div>';
+  stockScripts += '<div class="timing-row"><div class="timing-badge orange">50%</div><div class="timing-text">已售' + Math.round(d.targetSales*0.5) + '件：「过半了姐妹们！不拍真的来不及了！助手上库存！」</div></div>';
+  stockScripts += '<div class="timing-row"><div class="timing-badge pink">80%</div><div class="timing-text">已售' + Math.round(d.targetSales*0.8) + '件：「最后' + Math.round(d.targetSales*0.2) + '件！！！犹豫的宝贝最后机会！」</div></div>';
+  stockScripts += '<div class="timing-row"><div class="timing-badge dark">95%</div><div class="timing-text">「最后几件了！想要的扣"最后"我让助手帮你锁！」</div></div>';
+  document.getElementById('stock-scripts').innerHTML = stockScripts;
+
+  setText('aftercare-list', '', buildChecklist([
+    '下播后2小时内客服处理所有弹幕/私信咨询',
+    '发货前二次检验，重点查本场高退货风险品（颜色差异款）',
+    '发货48小时后主动推送物流跟踪通知',
+    '收货后3天自动触发好评引导私信',
+    '建立本款购买用户标签，用于下次同类款精准推送',
+    '退货样品进行原因分类统计，指导下次选款'
+  ]));
+
+  // TAB 5 数据
+  var gmv = d.price * d.targetSales;
+  var kpis = [
+    { val: d.targetSales + '件', label: '销量目标', target: '完成率>90%' },
+    { val: '¥' + gmv, label: 'GMV目标', target: '超额有奖' },
+    { val: Math.round(d.targetSales/d.stock*100) + '%', label: '动销率', target: '目标>40%' },
+    { val: Math.round(d.price*0.85) + '元', label: '客单价目标', target: '含凑单提升' },
+    { val: '<8%', label: '退货率目标', target: '精准选码关键' },
+    { val: '>3分', label: 'UV价值', target: '每千次观看' }
+  ];
+  var kpiHtml = '';
+  kpis.forEach(function(k){
+    kpiHtml += '<div class="kpi-card"><div class="kpi-val">' + k.val + '</div><div class="kpi-label">' + k.label + '</div><div class="kpi-target">' + k.target + '</div></div>';
+  });
+  document.getElementById('kpi-grid').innerHTML = kpiHtml;
+
+  var alerts = '';
+  alerts += '<div class="timing-row"><div class="timing-badge pink">红线</div><div class="timing-text">开播15分钟成交 <strong><' + Math.round(d.targetSales*0.05) + '件</strong>：立即更换逼单话术策略，考虑价格刺激</div></div>';
+  alerts += '<div class="timing-row"><div class="timing-badge orange">黄线</div><div class="timing-text">在线人数30分钟内下降 <strong>>30%</strong>：穿插互动游戏/抽奖提高留存</div></div>';
+  alerts += '<div class="timing-row"><div class="timing-badge purple">注意</div><div class="timing-text">退货率实时监控，超过 <strong>12%</strong> 立即排查原因（尺码/颜色/描述不符）</div></div>';
+  alerts += '<div class="timing-row"><div class="timing-badge green">目标</div><div class="timing-text">每30分钟成交不低于 <strong>' + Math.round(d.targetSales*0.3) + '件</strong>，否则加大互动和优惠力度</div></div>';
+  document.getElementById('alert-lines').innerHTML = alerts;
+
+  setText('review-list', '', buildChecklist([
+    '总成交件数 vs 目标完成率',
+    'GMV及客单价是否达标',
+    '各时段成交曲线（找最高转化时刻复制经验）',
+    '退款率及主要退款原因分析',
+    '本场新增粉丝数及粉丝转化率',
+    '商品点击率（>5%为优秀），点击转化率（>3%为优秀）',
+    '评论区热词统计（正面/负面反馈）'
+  ]));
+
+  setText('post-list', '', buildChecklist([
+    '剪辑本场高潮片段发布二次传播',
+    '整理高频好评话术更新到下次话术库',
+    '统计本款各颜色/尺码销量，指导下次备货比例',
+    '针对复购用户打标签，24小时内私信感谢+下款预告',
+    '汇总本款退货原因，反馈给选品/供应链团队',
+    '更新选品评分卡，为同类款打分'
+  ]));
+}
+
+function buildChecklist(items) {
+  return items.map(function(i){ return '<li>' + i + '</li>'; }).join('');
+}
+
+function buildTimeline(items) {
+  var html = '';
+  items.forEach(function(item){
+    html += '<div class="timing-row"><div class="timing-badge ' + item[0] + '">' + item[1] + '</div><div class="timing-text"><strong>' + item[2] + '：</strong>' + item[3] + '</div></div>';
+  });
+  return html;
+}
+
+function setText(id, label, html) {
+  document.getElementById(id).innerHTML = html;
+}
+
+function setHTML(id, text) {
+  document.getElementById(id).textContent = text;
+}
+
+function switchTab(idx) {
+  document.querySelectorAll('.sop-tab').forEach(function(t, i){ t.classList.toggle('active', i===idx); });
+  document.querySelectorAll('.sop-panel').forEach(function(p, i){ p.classList.toggle('active', i===idx); });
+}
+
+function copyText(id) {
+  var text = document.getElementById(id).innerText || document.getElementById(id).textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){ showToast('已复制到剪贴板 ✓'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.top = '-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showToast('已复制 ✓');
+  }
+}
+
+function copyAllSOP() {
+  var all = '=== ' + document.getElementById('result-title').textContent + ' ===\n\n';
+  document.querySelectorAll('.sop-panel').forEach(function(panel, i){
+    var title = document.querySelectorAll('.sop-tab')[i].textContent;
+    all += '\n【' + title + '】\n';
+    all += panel.innerText + '\n';
+  });
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(all).then(function(){ showToast('全部SOP已复制 ✓'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = all; ta.style.position='fixed'; ta.style.top='-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showToast('已复制 ✓');
+  }
+}
+
+function showToast(msg) {
+  var t = document.createElement('div');
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;z-index:9999;pointer-events:none;';
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2000);
+}
+
+function resetForm() {
+  document.getElementById('result-area').classList.remove('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>
